@@ -43,7 +43,7 @@
          org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
          org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.packagesForStarImport>
       <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.separateStaticImports>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.separateStaticImports>
-      <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapAnnotationArgs>WRAP_ALWAYS</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapAnnotationArgs>
+      <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapAnnotationArgs>WRAP_IF_LONG</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapAnnotationArgs>
       <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapEnumConstants>WRAP_ALWAYS</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapEnumConstants>
       <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapExtendsImplementsKeyword>WRAP_ALWAYS</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapExtendsImplementsKeyword>
       <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapExtendsImplementsList>WRAP_IF_LONG</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.wrapExtendsImplementsList>
@@ -156,7 +156,15 @@
       </dependency>
       <dependency>
          <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-data</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
          <artifactId>spring-security-test</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security.oauth</groupId>
+         <artifactId>spring-security-oauth2</artifactId>
       </dependency>
    </dependencies>
 
