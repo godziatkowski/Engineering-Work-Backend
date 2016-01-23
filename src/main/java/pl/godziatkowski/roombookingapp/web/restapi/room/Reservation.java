@@ -15,10 +15,10 @@ public class Reservation {
     private final Long buildingId;
     private final RoomType roomType;
     private final Long userId;
-    private String userFirstName;
-    private String userLastName;
+    private final String userFirstName;
+    private final String userLastName;
 
-    public Reservation(ReservationSnapshot reservationSnapshot) {
+    public Reservation(ReservationSnapshot reservationSnapshot, UserSnapshot userSnapshot) {
         this.id = reservationSnapshot.getId();
         this.startDate = reservationSnapshot.getStartDate();
         this.endDate = reservationSnapshot.getEndDate();
@@ -28,10 +28,6 @@ public class Reservation {
         this.roomType = pl.godziatkowski.roombookingapp.domain.room.entity.RoomType.convertToRestapiValue(
             reservationSnapshot.getRoomSnapshot().getRoomType());
         this.userId = reservationSnapshot.getUserId();
-    }
-
-    public Reservation(ReservationSnapshot reservationSnapshot, UserSnapshot userSnapshot) {
-        this(reservationSnapshot);
         this.userFirstName = userSnapshot.getFirstName();
         this.userLastName = userSnapshot.getLastName();
     }

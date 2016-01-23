@@ -98,7 +98,7 @@ public class ReservationApi {
     public HttpEntity<List<Reservation>> reservationsForRoom(ReservationSearchParams reservationSearchParams) {
         if (reservationSearchParams.getRoomId() == null && onlyOneDateIsGiven(reservationSearchParams)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }       
+        }
         List<ReservationSnapshot> reservationsSnapshots;
         if (reservationSearchParams.getFromDate() == null && reservationSearchParams.getToDate() == null) {
             reservationsSnapshots = reservationSnapshotFinder.findAllByRoomIdAndActive(
@@ -118,7 +118,7 @@ public class ReservationApi {
             .map(reservationsSnapshot -> {
                 return new Reservation(reservationsSnapshot, userSnapshots.get(reservationsSnapshot.getUserId()));
             })
-            .collect(Collectors.toList());      
+            .collect(Collectors.toList());
 
         return ResponseEntity
             .ok()
@@ -128,8 +128,14 @@ public class ReservationApi {
     @RequestMapping(method = RequestMethod.GET, value = "/building/{buildingId}")
     public HttpEntity<Map<Long, List<Reservation>>> reservationsForRooms(@PathVariable("buildingId") Long buildingId) {
         List<ReservationSnapshot> reservationSnapshots = reservationSnapshotFinder.findAllActiveByBuildingId(buildingId);
+        Set<Long> userIds = reservationSnapshots.stream().map(ReservationSnapshot::getUserId).collect(Collectors.toSet());
+        Map<Long, UserSnapshot> userSnapshots = userSnapshotFinder.findAsMapByUserIdIn(userIds);
+        System.out.println(userSnapshots.size());
         List<Reservation> reservations = reservationSnapshots.stream().map(reservationSnapshot -> {
-            return new Reservation(reservationSnapshot);
+            System.out.println(reservationSnapshot.getUserId() );
+            System.out.println(userSnapshots.get(reservationSnapshot.getUserId()) );
+            
+            return new Reservation(reservationSnapshot, userSnapshots.get(reservationSnapshot.getUserId()));
         }).collect(Collectors.toList());
         Map<Long, List<Reservation>> reservationsGroupedByRoomId = reservations.stream()
             .collect(
