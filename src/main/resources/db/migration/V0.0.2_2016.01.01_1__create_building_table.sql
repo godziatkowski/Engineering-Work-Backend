@@ -1,0 +1,8 @@
+CREATE TABLE building(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(150) NOT NULL,
+    address VARCHAR(150) NOT NULL,
+    city VARCHAR(150) NOT NULL,
+    is_usable BOOLEAN NOT NULL,
+    PRIMARY KEY (id)
+);
