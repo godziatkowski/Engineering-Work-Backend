@@ -130,11 +130,7 @@ public class ReservationApi {
         List<ReservationSnapshot> reservationSnapshots = reservationSnapshotFinder.findAllActiveByBuildingId(buildingId);
         Set<Long> userIds = reservationSnapshots.stream().map(ReservationSnapshot::getUserId).collect(Collectors.toSet());
         Map<Long, UserSnapshot> userSnapshots = userSnapshotFinder.findAsMapByUserIdIn(userIds);
-        System.out.println(userSnapshots.size());
         List<Reservation> reservations = reservationSnapshots.stream().map(reservationSnapshot -> {
-            System.out.println(reservationSnapshot.getUserId() );
-            System.out.println(userSnapshots.get(reservationSnapshot.getUserId()) );
-            
             return new Reservation(reservationSnapshot, userSnapshots.get(reservationSnapshot.getUserId()));
         }).collect(Collectors.toList());
         Map<Long, List<Reservation>> reservationsGroupedByRoomId = reservations.stream()
