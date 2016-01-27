@@ -14,7 +14,7 @@ public class AccountRegister {
     private String login;
 
     @NotNull
-    @Size(min = 8, max = 60)
+    @Size(min = 4, max = 60)
     private String password;
 
     @NotNull
