@@ -27,7 +27,7 @@ public class UserInitializer
     public List<UserSnapshot> initializeUsers() {
         List<UserSnapshot> userIds = new ArrayList<>();
 
-        userIds.add(userBO.register("RafałGorski", "qwert", "Rafał", "Gorski"));
+        userIds.add(userBO.register("RafalGorski", "qwert", "Rafał", "Gorski"));
         userIds.add(userBO.register("BarbaraKaczmarek", "trewq", "Barbara", "Kaczmarek"));
         userIds.add(userBO.register("TadeuszAdamski", "zaqwsx", "Tadeusz", "Adamski"));
 
