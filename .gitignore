@@ -1,2 +1,8 @@
 /target/
+/nb-configuration.xml
+/nbactions.xml
+
+# Ignore Eclipse files
+.classpath
+.project
 .settings/
