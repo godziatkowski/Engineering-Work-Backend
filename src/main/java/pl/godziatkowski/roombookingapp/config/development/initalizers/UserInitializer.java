@@ -25,13 +25,17 @@ public class UserInitializer
 
     @Override
     public List<UserSnapshot> initializeUsers() {
-        List<UserSnapshot> userIds = new ArrayList<>();
+        List<UserSnapshot> users = new ArrayList<>();
 
-        userIds.add(userBO.register("RafalGorski", "qwert", "Rafał", "Gorski"));
-        userIds.add(userBO.register("BarbaraKaczmarek", "trewq", "Barbara", "Kaczmarek"));
-        userIds.add(userBO.register("TadeuszAdamski", "zaqwsx", "Tadeusz", "Adamski"));
+        users.add(userBO.register("admin", "admin", "admin", "admin"));
 
-        return userIds;
+        userBO.grantAdminRights(users.get(0).getId());
+
+        users.add(userBO.register("RafalGorski", "qwert", "Rafał", "Gorski"));
+        users.add(userBO.register("BarbaraKaczmarek", "trewq", "Barbara", "Kaczmarek"));
+        users.add(userBO.register("TadeuszAdamski", "zaqwsx", "Tadeusz", "Adamski"));
+
+        return users;
     }
 
 }
