@@ -4,16 +4,13 @@ import java.time.LocalDateTime;
 
 import pl.godziatkowski.roombookingapp.domain.room.dto.ReservationSnapshot;
 import pl.godziatkowski.roombookingapp.domain.user.dto.UserSnapshot;
-import pl.godziatkowski.roombookingapp.web.restapi.room.RoomType;
 
 public class Reservation {
 
     private final Long id;
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
-    private final Long roomId;
-    private final String roomName;
-    private final RoomType roomType;
+    private final Room room;
     private final Long userId;
     private final String userFirstName;
     private final String userLastName;
@@ -22,10 +19,7 @@ public class Reservation {
         this.id = reservationSnapshot.getId();
         this.startDate = reservationSnapshot.getStartDate();
         this.endDate = reservationSnapshot.getEndDate();
-        this.roomId = reservationSnapshot.getRoomSnapshot().getId();
-        this.roomName = reservationSnapshot.getRoomSnapshot().getName();
-        this.roomType = pl.godziatkowski.roombookingapp.domain.room.entity.RoomType.convertToRestapiValue(
-            reservationSnapshot.getRoomSnapshot().getRoomType());
+        this.room = new Room(reservationSnapshot.getRoomSnapshot());
         this.userId = reservationSnapshot.getUserId();
         this.userFirstName = userSnapshot.getFirstName();
         this.userLastName = userSnapshot.getLastName();
@@ -43,16 +37,8 @@ public class Reservation {
         return endDate;
     }
 
-    public Long getRoomId() {
-        return roomId;
-    }
-
-    public String getRoomName() {
-        return roomName;
-    }
-
-    public RoomType getRoomType() {
-        return roomType;
+    public Room getRoom() {
+        return room;
     }
 
     public Long getUserId() {

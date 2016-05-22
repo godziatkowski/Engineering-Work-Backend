@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.godziatkowski.roombookingapp.domain.room.bo.IReservationBO;
 import pl.godziatkowski.roombookingapp.domain.room.dto.ReservationSnapshot;
 import pl.godziatkowski.roombookingapp.domain.room.finder.IReservationSnapshotFinder;
-import pl.godziatkowski.roombookingapp.domain.room.finder.IRoomSnapshotFinder;
 import pl.godziatkowski.roombookingapp.domain.user.dto.UserSnapshot;
 import pl.godziatkowski.roombookingapp.domain.user.finder.IUserSnapshotFinder;
 
@@ -38,19 +37,17 @@ public class ReservationApi {
     private final IReservationBO reservationBO;
     private final IReservationSnapshotFinder reservationSnapshotFinder;
     private final IUserSnapshotFinder userSnapshotFinder;
-    private final IRoomSnapshotFinder roomSnapshotFinder;
     private final Validator reservationNewValidator;
     private final Validator reservationEditValidator;
 
     @Autowired
     public ReservationApi(IReservationBO reservationBO, IReservationSnapshotFinder reservationSnapshotFinder,
-        IUserSnapshotFinder userSnapshotFinder, IRoomSnapshotFinder roomSnapshotFinder,
+        IUserSnapshotFinder userSnapshotFinder,
         @Qualifier("reservationNewValidator") Validator reservationNewValidator,
         @Qualifier("reservationEditValidator") Validator reservationEditValidator) {
         this.reservationBO = reservationBO;
         this.reservationSnapshotFinder = reservationSnapshotFinder;
         this.userSnapshotFinder = userSnapshotFinder;
-        this.roomSnapshotFinder = roomSnapshotFinder;
         this.reservationNewValidator = reservationNewValidator;
         this.reservationEditValidator = reservationEditValidator;
     }
