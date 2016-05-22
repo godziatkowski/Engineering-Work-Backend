@@ -27,7 +27,7 @@ public interface IReservationRepository
     public List<Reservation> findAllByUserIdAndIsCanceledFalse(Long id);
 
     public List<Reservation> findAllByRoomIdAndIsCanceledFalse(Long roomId);
-    @Query("SELECT r FROM Reservation r INNER JOIN r.room rm WHERE r.isCanceled IS FALSE AND rm.buildingId = :id")
-    public List<Reservation> findAllByIsCanceledFalseAndRoomInBuildingWith(@Param("id") Long id);
+    @Query("SELECT r FROM Reservation r INNER JOIN r.room rm WHERE r.isCanceled IS FALSE AND rm.floor = :floor")
+    public List<Reservation> findAllByIsCanceledFalseAndRoomOnFloor(@Param("floor") Integer floor);
 
 }

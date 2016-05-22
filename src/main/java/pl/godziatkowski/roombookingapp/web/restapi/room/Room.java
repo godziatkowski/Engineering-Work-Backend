@@ -1,6 +1,5 @@
 package pl.godziatkowski.roombookingapp.web.restapi.room;
 
-import pl.godziatkowski.roombookingapp.domain.building.dto.BuildingSnapshot;
 import pl.godziatkowski.roombookingapp.domain.room.dto.RoomSnapshot;
 
 public class Room {
@@ -14,26 +13,18 @@ public class Room {
     private final Boolean hasProjector;
     private final Boolean hasBlackboard;
     private final Boolean isUsable;
-    private final Long buildingId;
-    private String buildingName;
 
     public Room(RoomSnapshot roomSnapshot) {
         this.id = roomSnapshot.getId();
         this.name = roomSnapshot.getName();
         this.roomType = pl.godziatkowski.roombookingapp.domain.room.entity.RoomType.convertToRestapiValue(
             roomSnapshot.getRoomType());
-        this.buildingId = roomSnapshot.getBuildingId();
         this.floor = roomSnapshot.getFloor();
         this.seatsCount = roomSnapshot.getSeatsCount();
         this.computerStationsCount = roomSnapshot.getComputerStationsCount();
         this.hasProjector = roomSnapshot.hasProjector();
         this.hasBlackboard = roomSnapshot.hasBlackboard();
         this.isUsable = roomSnapshot.isUsable();
-    }
-
-    Room(RoomSnapshot roomSnapshot, BuildingSnapshot buildingSnapshot) {
-        this(roomSnapshot);
-        this.buildingName = buildingSnapshot.getName();
     }
 
     public Long getId() {
@@ -46,10 +37,6 @@ public class Room {
 
     public RoomType getRoomType() {
         return roomType;
-    }
-
-    public Long getBuildingId() {
-        return buildingId;
     }
 
     public Integer getFloor() {
@@ -74,10 +61,6 @@ public class Room {
 
     public Boolean getIsUsable() {
         return isUsable;
-    }
-    
-    public String getBuildingName(){
-        return buildingName;
     }
 
 }

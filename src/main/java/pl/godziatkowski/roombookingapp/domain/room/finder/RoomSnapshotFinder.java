@@ -24,38 +24,43 @@ public class RoomSnapshotFinder
     @Override
     public List<RoomSnapshot> findUsable() {
         List<Room> rooms = roomRepository.findAllByIsUsableTrue();
-            
+
         return convert(rooms);
     }
 
     @Override
-    public List<RoomSnapshot> findAllByName(String name) {
-        List<Room> rooms = roomRepository.findAllByName(name);
+    public List<RoomSnapshot> findAllByFloor(Integer floor) {
+        List<Room> rooms = roomRepository.findAllByFloor(floor);
         return convert(rooms);
     }
 
     @Override
-    public RoomSnapshot findOneByNameAndBuildingId(String name, Long buildingId) {
-        Room room = roomRepository.findOneByBuildingIdAndName(buildingId, name);
+    public RoomSnapshot findOneByNameAndFloor(String name, Integer floor) {
+        Room room = roomRepository.findOneByNameAndFloor(name, floor);
         return room != null ? room.toSnapshot() : null;
     }
 
     @Override
     public List<RoomSnapshot> findAll() {
-         List<Room> rooms = roomRepository.findAll();
-         return convert(rooms);
+        List<Room> rooms = roomRepository.findAll();
+        return convert(rooms);
+    }
+    
+    @Override
+    public List<Integer> findFloors(){
+        return roomRepository.findFloors();
+    }
+    
+    @Override
+    public RoomSnapshot findOneByName(String name){
+        Room room = roomRepository.findOneByName(name);
+        return room != null ? room.toSnapshot() : null;
     }
 
     @Override
     public RoomSnapshot findOneById(Long id) {
         Room room = roomRepository.findOne(id);
         return room != null ? room.toSnapshot() : null;
-    }
-
-    @Override
-    public List<RoomSnapshot> findAllByBuildingId(Long buildingId) {
-        List<Room> rooms = roomRepository.findAllByBuildingId(buildingId);
-        return convert(rooms);
     }
 
     private List<RoomSnapshot> convert(List<Room> rooms) {

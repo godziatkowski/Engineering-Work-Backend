@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import pl.godziatkowski.roombookingapp.domain.building.dto.BuildingSnapshot;
-import pl.godziatkowski.roombookingapp.domain.building.finder.IBuildingSnapshotFinder;
 import pl.godziatkowski.roombookingapp.domain.room.bo.IRoomBO;
 import pl.godziatkowski.roombookingapp.domain.room.dto.RoomSnapshot;
 import pl.godziatkowski.roombookingapp.domain.room.finder.IRoomSnapshotFinder;
@@ -33,18 +31,15 @@ public class RoomApi {
 
     private final IRoomBO roomBO;
     private final IRoomSnapshotFinder roomSnapshotFinder;
-    private final IBuildingSnapshotFinder buildingSnapshotFinder;
     private final Validator roomNewValidator;
     private final Validator roomEditValidator;
 
     @Autowired
     public RoomApi(IRoomBO roomBO, IRoomSnapshotFinder roomSnapshotFinder,
-        IBuildingSnapshotFinder buildingSnapshotFinder,
         @Qualifier("roomNewValidator") Validator roomNewValidator,
         @Qualifier("roomEditValidator") Validator roomEditValidator) {
         this.roomBO = roomBO;
         this.roomSnapshotFinder = roomSnapshotFinder;
-        this.buildingSnapshotFinder = buildingSnapshotFinder;
         this.roomNewValidator = roomNewValidator;
         this.roomEditValidator = roomEditValidator;
     }
@@ -79,9 +74,9 @@ public class RoomApi {
             .body(rooms);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{buildingId}/rooms")
-    public HttpEntity<List<Room>> listForBuilding(@PathVariable("buildingId") Long buildingId) {
-        List<RoomSnapshot> roomSnapshots = roomSnapshotFinder.findAllByBuildingId(buildingId);
+    @RequestMapping(method = RequestMethod.GET, value = "/{floor}/rooms")
+    public HttpEntity<List<Room>> roomsOnFloor(@PathVariable("floor") Integer floor) {
+        List<RoomSnapshot> roomSnapshots = roomSnapshotFinder.findAllByFloor(floor);
         List<Room> rooms = roomSnapshots.stream().map(Room::new).collect(Collectors.toList());
         return ResponseEntity
             .ok()
@@ -95,11 +90,10 @@ public class RoomApi {
         if (roomSnapshot == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        BuildingSnapshot buildingSnapshot = buildingSnapshotFinder.findOneById(roomSnapshot.getBuildingId());
 
         return ResponseEntity
             .ok()
-            .body(new Room(roomSnapshot, buildingSnapshot));
+            .body(new Room(roomSnapshot));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
@@ -107,7 +101,6 @@ public class RoomApi {
         RoomSnapshot roomSnapshot = roomBO.add(
             roomNew.getName(),
             RoomType.convertToDomainValue(roomNew.getRoomType()),
-            roomNew.getBuildingId(),
             roomNew.getFloor(),
             roomNew.getSeatsCount(),
             roomNew.getComputerStationsCount(),
@@ -125,7 +118,6 @@ public class RoomApi {
             roomEdit.getId(),
             roomEdit.getName(),
             RoomType.convertToDomainValue(roomEdit.getRoomType()),
-            roomEdit.getBuildingId(),
             roomEdit.getFloor(),
             roomEdit.getSeatsCount(),
             roomEdit.getComputerStationsCount(),

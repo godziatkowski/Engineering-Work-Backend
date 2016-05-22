@@ -30,7 +30,6 @@ public class WhenRoomBOTest
             roomSnapshot = roomBO.add(
                 (String) roomData.get("name"),
                 (RoomType) roomData.get("roomType"),
-                (Long) roomData.get("buildingId"),
                 (Integer) roomData.get("floor"),
                 (Long) roomData.get("seatsCount"),
                 (Long) roomData.get("computerStationsCount"),
@@ -48,7 +47,6 @@ public class WhenRoomBOTest
             roomBO.edit(roomSnapshot.getId(),
                 (String) roomData.get("name"),
                 (RoomType) roomData.get("roomType"),
-                (Long) roomData.get("buildingId"),
                 (Integer) roomData.get("floor"),
                 (Long) roomData.get("seatsCount"),
                 (Long) roomData.get("computerStationsCount"),

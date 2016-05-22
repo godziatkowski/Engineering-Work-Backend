@@ -1,6 +1,5 @@
 package pl.godziatkowski.roombookingapp.domain.room.bo;
 
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,38 +26,40 @@ public class RoomBO
     }
 
     @Override
-    public RoomSnapshot add(String name, RoomType roomType, Long buildingId, Integer floor, Long seatsCount,
+    public RoomSnapshot add(String name, RoomType roomType, Integer floor, Long seatsCount,
         Long computerStationsCount, Boolean projector, Boolean blackboard) {
-        if (roomRepository.findOneByBuildingIdAndName(buildingId, name) != null) {
+        if (roomRepository.findOneByNameAndFloor(name, floor) != null) {
             throw new RoomAlreadyExistsException();
         }
-        Room room = new Room(name, roomType, buildingId, floor, seatsCount, computerStationsCount, projector, blackboard);
+        Room room = new Room(name, roomType, floor, seatsCount, computerStationsCount, projector, blackboard);
         room = roomRepository.save(room);
         RoomSnapshot roomSnapshot = room.toSnapshot();
         LOGGER.info(
-            "Created room with name <{}> and id <{}> in building with id <{}>. Room type is <{}> and it has <{}> seats and <{}> computer stations. Projector present: <{}>, Blackboard present: <{}>",
-            roomSnapshot.getName(), roomSnapshot.getId(), roomSnapshot.getBuildingId(), roomSnapshot.getRoomType(),
+            "Created room with name <{}> and id <{}> at <{}> floor. Room type is <{}> and it has <{}> seats and <{}> computer stations. Projector present: <{}>, Blackboard present: <{}>",
+            roomSnapshot.getName(), roomSnapshot.getId(), 
+            roomSnapshot.getFloor(),
+            roomSnapshot.getRoomType(),
             roomSnapshot.getSeatsCount(),
             roomSnapshot.getComputerStationsCount(), roomSnapshot.hasProjector(), roomSnapshot.hasBlackboard());
         return roomSnapshot;
     }
 
     @Override
-    public void edit(Long id, String name, RoomType roomType, Long buildingId, Integer floor, Long seatsCount,
+    public void edit(Long id, String name, RoomType roomType, Integer floor, Long seatsCount,
         Long computerStationsCount, Boolean projector, Boolean blackboard) {
         Room room;
-        if ((room = roomRepository.findOneByBuildingIdAndName(buildingId, name)) != null) {
+        if ((room = roomRepository.findOneByNameAndFloor(name, floor)) != null) {
             if (!room.toSnapshot().getId().equals(id)) {
                 throw new RoomAlreadyExistsException();
             }
         } else {
             room = roomRepository.findOne(id);
         }
-        room.edit(name, roomType, buildingId, floor, seatsCount, computerStationsCount, projector, blackboard);
+        room.edit(name, roomType, floor, seatsCount, computerStationsCount, projector, blackboard);
         roomRepository.save(room);
         LOGGER.info(
-            "Edited room with id <{}>. Name: <{}>, Room type: <{}>, Building id: <{}>, Count of seats: <{}>, Count of computer stations: <{}>, has Projector: <{}>, has Blackboard: <{}>.",
-            id, name, roomType, buildingId, seatsCount, computerStationsCount, projector, blackboard);
+            "Edited room with id <{}>. Name: <{}>, Room type: <{}>, floor: <{}>, Count of seats: <{}>, Count of computer stations: <{}>, has Projector: <{}>, has Blackboard: <{}>.",
+            id, name, roomType, floor, seatsCount, computerStationsCount, projector, blackboard);
     }
 
     @Override
@@ -79,16 +80,6 @@ public class RoomBO
             roomRepository.save(room);
             LOGGER.info("Room with id <{}> marked as not usable", id);
         }
-    }
-
-    @Override
-    public void markRoomsInBuildingAsNotUsable(Long buildingId) {
-        List<Room> rooms = roomRepository.findAllByBuildingId(buildingId);
-        rooms.forEach(room -> {
-            room.markAsNotUsable();
-        });
-        roomRepository.save(rooms);
-        LOGGER.info("<{}> rooms in building with id <{}> marked as not usable", rooms.size(), buildingId);
     }
 
 }

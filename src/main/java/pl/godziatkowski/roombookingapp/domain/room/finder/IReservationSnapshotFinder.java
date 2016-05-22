@@ -17,6 +17,4 @@ public interface IReservationSnapshotFinder {
 
     public List<ReservationSnapshot> findAllByRoomIdAndActive(Long roomId);
 
-    public List< ReservationSnapshot> findAllActiveByBuildingId(Long id);
-
 }

@@ -1,4 +1,4 @@
-package pl.godziatkowski.roombookingapp.domain.room.entity.steps.room;
+package pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class GivenReservationTest
     private Map<String, Object> reservationData = new HashMap<>();
 
     public GivenReservationTest a_room() {
-        room = new Room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true, true);
+        room = new Room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true, true);
         room = roomRepository.save(room);
         return this;
     }

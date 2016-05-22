@@ -1,7 +1,5 @@
 package pl.godziatkowski.roombookingapp.domain.room.entity;
 
-import pl.godziatkowski.roombookingapp.domain.room.entity.RoomType;
-
 import javax.transaction.Transactional;
 
 import org.junit.After;
@@ -17,9 +15,9 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 import pl.godziatkowski.roombookingapp.Application;
-import pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation.GivenRoomTest;
-import pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation.ThenRoomTest;
-import pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation.WhenRoomTest;
+import pl.godziatkowski.roombookingapp.domain.room.entity.steps.room.GivenRoomTest;
+import pl.godziatkowski.roombookingapp.domain.room.entity.steps.room.ThenRoomTest;
+import pl.godziatkowski.roombookingapp.domain.room.entity.steps.room.WhenRoomTest;
 import pl.godziatkowski.roombookingapp.domain.room.repository.IRoomRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,10 +43,10 @@ public class RoomTest
     @Test
     public void should_edit_room() {
         given()
-            .an_existing_room(CLAZZ, RoomType.LECTURE_HALL, LONG_VALUE, INTEGER_VALUE,
+            .an_existing_room(CLAZZ, RoomType.LECTURE_HALL, INTEGER_VALUE,
                 LONG_VALUE, LONG_VALUE, true, true)
             .and()
-            .room_data(CLAZZ, RoomType.LABORATORY, LONG_VALUE + 1, INTEGER_VALUE + 1,
+            .room_data(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE + 1,
                 LONG_VALUE + 1, LONG_VALUE + 1, false, false);
 
         when().edit_invoked();
@@ -57,7 +55,7 @@ public class RoomTest
 
     @Test
     public void should_mark_room_as_usable() {
-        given().an_existing_room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
+        given().an_existing_room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
             true).and().room_is_marked_as_not_usable();
         when().mark_as_usable_invoked();
         then().room_should_be_marked_as_usable();
@@ -65,7 +63,7 @@ public class RoomTest
 
     @Test
     public void should_mark_room_as_not_usable() {
-        given().an_existing_room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
+        given().an_existing_room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
             true);
         when().mark_as_not_usable_invoked();
         then().room_should_be_marked_as_not_usable();
@@ -73,14 +71,14 @@ public class RoomTest
 
     @Test
     public void should_return_snapshot_of_room() {
-        given().an_existing_room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
+        given().an_existing_room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
             true);
         when().to_snapshot_invoked();
         then().snapshot_should_be_returned();
     }
     @Test
     public void should_throw_entity_in_state_new_exception_when_to_snapshot_invoked_on_not_persisted_room() {
-        given().not_persisted_room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
+        given().not_persisted_room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
             true);
         when().to_snapshot_invoked();
         then().exception_should_be_thrown();

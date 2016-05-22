@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import pl.godziatkowski.roombookingapp.config.development.initalizers.IBuildingInitalizer;
 import pl.godziatkowski.roombookingapp.config.development.initalizers.IReservationInitializer;
 import pl.godziatkowski.roombookingapp.config.development.initalizers.IRoomInitlializer;
 import pl.godziatkowski.roombookingapp.config.development.initalizers.IUserInitializer;
-import pl.godziatkowski.roombookingapp.domain.building.finder.IBuildingSnapshotFinder;
+import pl.godziatkowski.roombookingapp.domain.room.finder.IRoomSnapshotFinder;
 import pl.godziatkowski.roombookingapp.domain.user.dto.UserSnapshot;
 import pl.godziatkowski.roombookingapp.domain.user.finder.IUserSnapshotFinder;
 import pl.godziatkowski.roombookingapp.sharedkernel.constant.Profiles;
@@ -22,9 +21,7 @@ import pl.godziatkowski.roombookingapp.sharedkernel.constant.Profiles;
 public class DataInitializer {
 
     @Autowired
-    private IBuildingSnapshotFinder buildingSnapshotFinder;
-    @Autowired
-    private IBuildingInitalizer buildingInitalizer;
+    private IRoomSnapshotFinder roomSnapshotFinder;
     @Autowired
     private IRoomInitlializer roomInitializer;
     @Autowired
@@ -44,9 +41,8 @@ public class DataInitializer {
             userSnapshots.addAll(userInitializer.initializeUsers());
         }
 
-        if (buildingSnapshotFinder.findAll().isEmpty()) {
-            List<Long> buildingIds = buildingInitalizer.initializeBuildings();
-            List<Long> roomIds = roomInitializer.initializeRooms(buildingIds);
+        if (roomSnapshotFinder.findAll().isEmpty()) {
+            List<Long> roomIds = roomInitializer.initializeRooms();
             reservationInitializer.initializeReservations(roomIds, userSnapshots);
         }
 

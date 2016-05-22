@@ -11,8 +11,6 @@ public class RoomNew {
     @NotNull
     private RoomType roomType;
     @NotNull
-    private Long buildingId;
-    @NotNull
     private Integer floor;
     @NotNull
     private Long seatsCount;
@@ -37,14 +35,6 @@ public class RoomNew {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
-    }
-
-    public Long getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(Long buildingId) {
-        this.buildingId = buildingId;
     }
 
     public Integer getFloor() {

@@ -10,12 +10,14 @@ public interface IRoomSnapshotFinder {
     
     List<RoomSnapshot> findAll();
 
-    List<RoomSnapshot> findAllByName(String name);
-    
-    RoomSnapshot findOneByNameAndBuildingId(String name, Long buildingId);
+    RoomSnapshot findOneByNameAndFloor(String name, Integer floor);
 
     RoomSnapshot findOneById(Long id);
-    
-    List<RoomSnapshot> findAllByBuildingId(Long buildingId);
 
+    List<RoomSnapshot> findAllByFloor(Integer floor);
+    
+    List<Integer> findFloors();
+
+    RoomSnapshot findOneByName(String name);
+    
 }

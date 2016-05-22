@@ -1,4 +1,4 @@
-package pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation;
+package pl.godziatkowski.roombookingapp.domain.room.entity.steps.room;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,6 @@ public class ThenRoomTest
         assertThat(roomSnapshot.getId(), is(equalTo(existingRoomId)));
         assertThat(roomSnapshot.getName(), is(equalTo((String) roomData.get("name"))));
         assertThat(roomSnapshot.getRoomType(), is(equalTo((RoomType) roomData.get("roomType"))));
-        assertThat(roomSnapshot.getBuildingId(), is(equalTo((Long) roomData.get("buildingId"))));
         assertThat(roomSnapshot.getFloor(), is(equalTo((Integer) roomData.get("floor"))));
         assertThat(roomSnapshot.getSeatsCount(), is(equalTo((Long) roomData.get("seatsCount"))));
         assertThat(roomSnapshot.getComputerStationsCount(), is(equalTo((Long) roomData.get("computerStationsCount"))));
@@ -61,7 +60,6 @@ public class ThenRoomTest
         assertThat(roomSnapshot.getId(), is(equalTo(existingRoomId)));
         assertThat(roomSnapshot.getName(), is(equalTo((String) roomData.get("name"))));
         assertThat(roomSnapshot.getRoomType(), is(equalTo((RoomType) roomData.get("roomType"))));
-        assertThat(roomSnapshot.getBuildingId(), is(equalTo((Long) roomData.get("buildingId"))));
         assertThat(roomSnapshot.getFloor(), is(equalTo((Integer) roomData.get("floor"))));
         assertThat(roomSnapshot.getSeatsCount(), is(equalTo((Long) roomData.get("seatsCount"))));
         assertThat(roomSnapshot.getComputerStationsCount(), is(equalTo((Long) roomData.get("computerStationsCount"))));

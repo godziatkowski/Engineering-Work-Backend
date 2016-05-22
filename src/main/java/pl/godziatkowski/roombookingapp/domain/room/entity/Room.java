@@ -39,9 +39,6 @@ public class Room
     private RoomType roomType;
 
     @NotNull
-    private Long buildingId;
-
-    @NotNull
     private Integer floor;
 
     @NotNull
@@ -73,11 +70,10 @@ public class Room
         return id;
     }
 
-    public Room(String name, RoomType roomType, Long buildingId, Integer floor, Long seatsCount,
+    public Room(String name, RoomType roomType, Integer floor, Long seatsCount,
         Long computerStationsCount, Boolean hasProjector, Boolean hasBlackboard) {
         this.name = name;
         this.roomType = roomType;
-        this.buildingId = buildingId;
         this.floor = floor;
         this.seatsCount = seatsCount;
         this.computerStationsCount = computerStationsCount;
@@ -86,11 +82,10 @@ public class Room
         this.isUsable = true;
     }
 
-    public void edit(String name, RoomType roomType, Long buildingId, Integer floor, Long seatsCount,
+    public void edit(String name, RoomType roomType, Integer floor, Long seatsCount,
         Long computerStationsCount, Boolean hasProjector, Boolean hasBlackboard) {
         this.name = name;
         this.roomType = roomType;
-        this.buildingId = buildingId;
         this.floor = floor;
         this.seatsCount = seatsCount;
         this.computerStationsCount = computerStationsCount;
@@ -110,7 +105,7 @@ public class Room
         if (id == null) {
             throw new EntityInStateNewException();
         }
-        return new RoomSnapshot(id, name, roomType, buildingId, floor, seatsCount, computerStationsCount, hasProjector,
+        return new RoomSnapshot(id, name, roomType, floor, seatsCount, computerStationsCount, hasProjector,
             hasBlackboard, isUsable);
     }
 

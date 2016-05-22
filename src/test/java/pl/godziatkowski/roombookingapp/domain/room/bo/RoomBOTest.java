@@ -1,7 +1,5 @@
 package pl.godziatkowski.roombookingapp.domain.room.bo;
 
-import pl.godziatkowski.roombookingapp.domain.room.bo.IRoomBO;
-
 import javax.transaction.Transactional;
 
 import org.junit.After;
@@ -49,7 +47,7 @@ public class RoomBOTest
 
     @Test
     public void should_add_new_room() {
-        given().roomData(CLAZZ, RoomType.LECTURE_HALL, LONG_VALUE, INTEGER_VALUE,
+        given().roomData(CLAZZ, RoomType.LECTURE_HALL, INTEGER_VALUE,
             LONG_VALUE, LONG_VALUE, true, true);
         when().add_invoked_with_given_room_data();
         then().room_should_be_added();
@@ -57,9 +55,9 @@ public class RoomBOTest
 
     @Test
     public void should_throw_RoomAlreadyExistException_when_add_new_room_with_data_of_existing_room() {
-        given().an_existing_room(CLAZZ, RoomType.LECTURE_HALL, LONG_VALUE, INTEGER_VALUE,
+        given().an_existing_room(CLAZZ, RoomType.LECTURE_HALL, INTEGER_VALUE,
             LONG_VALUE, LONG_VALUE, true, true)
-            .and().roomData(CLAZZ, RoomType.LECTURE_HALL, LONG_VALUE, INTEGER_VALUE,
+            .and().roomData(CLAZZ, RoomType.LECTURE_HALL, INTEGER_VALUE,
                 LONG_VALUE, LONG_VALUE, true, true);
         when().add_invoked_with_given_room_data();
         then().exception_should_be_thrown();
@@ -67,9 +65,9 @@ public class RoomBOTest
 
     @Test
     public void should_edit_room() {
-        given().an_existing_room(CLAZZ, RoomType.LECTURE_HALL, LONG_VALUE, INTEGER_VALUE,
+        given().an_existing_room(CLAZZ, RoomType.LECTURE_HALL, INTEGER_VALUE,
             LONG_VALUE, LONG_VALUE, true, true)
-            .and().roomData(CLAZZ + 1, RoomType.LABORATORY, LONG_VALUE + 1, INTEGER_VALUE + 1,
+            .and().roomData(CLAZZ + 1, RoomType.LABORATORY, INTEGER_VALUE + 1,
                 LONG_VALUE + 1, LONG_VALUE + 1, false, false);
         when().edit_invoked();
         then().room_should_be_edited();
@@ -77,11 +75,11 @@ public class RoomBOTest
 
     @Test
     public void should_throw_RoomAlreadyExistException_when_edit_room_with_data_of_other_existing_room() {
-        given().an_existing_room(CLAZZ + 1, RoomType.LABORATORY, LONG_VALUE + 1, INTEGER_VALUE + 1,
+        given().an_existing_room(CLAZZ + 1, RoomType.LABORATORY, INTEGER_VALUE + 1,
                 LONG_VALUE + 1, LONG_VALUE + 1, false, false)
-            .and().an_existing_room(CLAZZ, RoomType.LECTURE_HALL, LONG_VALUE, INTEGER_VALUE,
+            .and().an_existing_room(CLAZZ, RoomType.LECTURE_HALL, INTEGER_VALUE,
             LONG_VALUE, LONG_VALUE, true, true)
-            .and().roomData(CLAZZ + 1, RoomType.LABORATORY, LONG_VALUE + 1, INTEGER_VALUE + 1,
+            .and().roomData(CLAZZ + 1, RoomType.LABORATORY, INTEGER_VALUE + 1,
                 LONG_VALUE + 1, LONG_VALUE + 1, false, false);
         when().edit_invoked();
         then().exception_should_be_thrown();
@@ -89,7 +87,7 @@ public class RoomBOTest
 
     @Test
     public void testMarkAsUsable() {
-        given().an_existing_room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
+        given().an_existing_room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
             true).and().room_is_not_usable();
         when().mark_as_usable_invoked();
         then().room_should_be_marked_as_usable();
@@ -97,7 +95,7 @@ public class RoomBOTest
 
     @Test
     public void testMarkAsNotUsable() {
-        given().an_existing_room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
+        given().an_existing_room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true,
             true);
         when().mark_as_not_usable_invoked();
         then().room_should_be_marked_as_not_usable();

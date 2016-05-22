@@ -67,13 +67,6 @@ public class ReservationSnapshotFinder
         return convert(reservations);
     }
 
-    @Override
-    public List< ReservationSnapshot> findAllActiveByBuildingId(Long id) {
-        List<Reservation> reservation = reservationRepository.findAllByIsCanceledFalseAndRoomInBuildingWith(id);
-        return convert(reservation);
-        
-    }
-
     private List<ReservationSnapshot> convert(List<Reservation> reservation) {
         return reservation.stream().map(Reservation::toSnapshot).collect(Collectors.toList());
     }

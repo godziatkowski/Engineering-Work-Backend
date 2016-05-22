@@ -32,7 +32,7 @@ public class GivenReservationBOTest
     private Room room;
 
     public GivenReservationBOTest a_room() {
-        room = new Room(CLAZZ, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true, true);
+        room = new Room(CLAZZ, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true, true);
         room = roomRepository.save(room);
         return this;
     }
@@ -62,7 +62,7 @@ public class GivenReservationBOTest
     }
 
     public GivenReservationBOTest another_room() {
-        room = new Room(CLAZZ + 2, RoomType.LABORATORY, LONG_VALUE, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true, true);
+        room = new Room(CLAZZ + 2, RoomType.LABORATORY, INTEGER_VALUE, LONG_VALUE, LONG_VALUE, true, true);
         room = roomRepository.save(room);
         return this;
     }

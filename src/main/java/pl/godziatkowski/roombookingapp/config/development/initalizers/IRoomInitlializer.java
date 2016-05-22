@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface IRoomInitlializer {
 
-    List<Long> initializeRooms(List<Long> buildingIds);
+    List<Long> initializeRooms();
 
 }

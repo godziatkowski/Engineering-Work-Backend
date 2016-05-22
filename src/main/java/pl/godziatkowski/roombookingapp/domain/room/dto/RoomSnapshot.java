@@ -7,7 +7,6 @@ public class RoomSnapshot {
     private final Long id;
     private final String name;
     private final RoomType roomType;
-    private final Long buildingId;
     private final Integer floor;
     private final Long seatsCount;
     private final Long computerStationsCount;
@@ -15,12 +14,11 @@ public class RoomSnapshot {
     private final Boolean hasBlackboard;
     private final Boolean isUsable;
 
-    public RoomSnapshot(Long id, String name, RoomType roomType, Long buildingId, Integer floor, Long seatsCount,
+    public RoomSnapshot(Long id, String name, RoomType roomType, Integer floor, Long seatsCount,
         Long computerStationsCount, Boolean hasProjector, Boolean hasBlackboard, Boolean isUsable) {
         this.id = id;
         this.name = name;
         this.roomType = roomType;
-        this.buildingId = buildingId;
         this.floor = floor;
         this.seatsCount = seatsCount;
         this.computerStationsCount = computerStationsCount;
@@ -39,10 +37,6 @@ public class RoomSnapshot {
 
     public RoomType getRoomType() {
         return roomType;
-    }
-
-    public Long getBuildingId() {
-        return buildingId;
     }
 
     public Integer getFloor() {

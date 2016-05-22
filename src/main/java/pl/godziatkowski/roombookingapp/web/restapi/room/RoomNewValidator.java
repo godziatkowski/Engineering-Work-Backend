@@ -3,7 +3,6 @@ package pl.godziatkowski.roombookingapp.web.restapi.room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
-import pl.godziatkowski.roombookingapp.domain.building.finder.IBuildingSnapshotFinder;
 import pl.godziatkowski.roombookingapp.domain.room.finder.IRoomSnapshotFinder;
 import pl.godziatkowski.roombookingapp.sharedkernel.annotations.RestValidator;
 import pl.godziatkowski.roombookingapp.web.restapi.commonvalidation.AbstractValidator;
@@ -15,7 +14,7 @@ public class RoomNewValidator
     private final IRoomSnapshotFinder roomSnapshotFinder;
 
     @Autowired
-    public RoomNewValidator(IRoomSnapshotFinder roomSnapshotFinder, IBuildingSnapshotFinder buildingSnapshotFinder) {
+    public RoomNewValidator(IRoomSnapshotFinder roomSnapshotFinder) {
         this.roomSnapshotFinder = roomSnapshotFinder;
     }
 
@@ -28,14 +27,14 @@ public class RoomNewValidator
     public void customValidation(Object target, Errors errors) {
         RoomNew roomNew = (RoomNew) target;
 
-        if (roomAlreadyExistInBuilding(roomNew)) {
-            errors.rejectValue("name", "RoomAlreadyExistInBuilding");
+        if (roomAlreadyExist(roomNew)) {
+            errors.rejectValue("name", "RoomAlreadyExist");
         }
 
     }
 
-    private boolean roomAlreadyExistInBuilding(RoomNew roomNew) {
-        return roomSnapshotFinder.findOneByNameAndBuildingId(roomNew.getName(), roomNew.getBuildingId()) != null;
+    private boolean roomAlreadyExist(RoomNew roomNew) {
+        return roomSnapshotFinder.findOneByName(roomNew.getName()) != null;
     }
 
 }

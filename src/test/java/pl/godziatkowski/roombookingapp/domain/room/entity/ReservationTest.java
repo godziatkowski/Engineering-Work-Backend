@@ -17,9 +17,9 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 import pl.godziatkowski.roombookingapp.Application;
-import pl.godziatkowski.roombookingapp.domain.room.entity.steps.room.GivenReservationTest;
-import pl.godziatkowski.roombookingapp.domain.room.entity.steps.room.ThenReservationTest;
-import pl.godziatkowski.roombookingapp.domain.room.entity.steps.room.WhenReservationTest;
+import pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation.GivenReservationTest;
+import pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation.ThenReservationTest;
+import pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation.WhenReservationTest;
 import pl.godziatkowski.roombookingapp.domain.room.repository.IReservationRepository;
 import pl.godziatkowski.roombookingapp.domain.room.repository.IRoomRepository;
 

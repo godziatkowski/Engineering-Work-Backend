@@ -1,4 +1,4 @@
-package pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation;
+package pl.godziatkowski.roombookingapp.domain.room.entity.steps.room;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,30 +24,28 @@ public class GivenRoomTest
     @ProvidedScenarioState
     private Long existingRoomId;
 
-    public GivenRoomTest an_existing_room(String name, RoomType roomType, Long buildingId, Integer floor,
+    public GivenRoomTest an_existing_room(String name, RoomType roomType, Integer floor,
         Long seatsCount, Long computerStationsCount, boolean hasProjector, boolean hasBlackboard) {
 
         roomData.put("name", name);
         roomData.put("roomType", roomType);
-        roomData.put("buildingId", buildingId);
         roomData.put("floor", floor);
         roomData.put("seatsCount", seatsCount);
         roomData.put("computerStationsCount", computerStationsCount);
         roomData.put("hasProjector", hasProjector);
         roomData.put("hasBlackboard", hasBlackboard);
 
-        room = new Room(name, roomType, buildingId, floor, seatsCount,
+        room = new Room(name, roomType, floor, seatsCount,
             computerStationsCount, hasProjector, hasBlackboard);
         room = roomRepository.save(room);
         existingRoomId = room.toSnapshot().getId();
         return this;
     }
 
-    public GivenRoomTest room_data(String name, RoomType roomType, Long buildingId, Integer floor,
+    public GivenRoomTest room_data(String name, RoomType roomType, Integer floor,
         Long seatsCount, Long computerStationsCount, boolean hasProjector, boolean hasBlackboard) {
         roomData.put("name", name);
         roomData.put("roomType", roomType);
-        roomData.put("buildingId", buildingId);
         roomData.put("floor", floor);
         roomData.put("seatsCount", seatsCount);
         roomData.put("computerStationsCount", computerStationsCount);
@@ -62,9 +60,9 @@ public class GivenRoomTest
         return this;
     }
 
-    public void not_persisted_room(String name, RoomType roomType, Long buildingId, Integer floor,
+    public void not_persisted_room(String name, RoomType roomType, Integer floor,
         Long seatsCount, Long computerStationsCount, boolean hasProjector, boolean hasBlackboard) {
-        room = new Room(name, roomType, buildingId, floor, seatsCount,
+        room = new Room(name, roomType, floor, seatsCount,
             computerStationsCount, hasProjector, hasBlackboard);
     }
 

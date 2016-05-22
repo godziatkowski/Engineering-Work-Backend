@@ -24,13 +24,13 @@ public class RoomInitializer
     }
 
     @Override
-    public List<Long> initializeRooms(List<Long> buildingIds) {
+    public List<Long> initializeRooms() {
         List<Long> roomIds = new ArrayList<>();
 
-        roomIds.add(rooomBO.add("E1", RoomType.LECTURE_HALL, buildingIds.get(0), 0, 140L, 0L, true, true).getId());
-        roomIds.add(rooomBO.add("E2", RoomType.LECTURE_HALL, buildingIds.get(0), 0, 40L, 0L, false, true).getId());
-        roomIds.add(rooomBO.add("05", RoomType.LABORATORY, buildingIds.get(1), 0, 20L, 20L, false, false).getId());
-        roomIds.add(rooomBO.add("314", RoomType.LABORATORY, buildingIds.get(2), 3, 14L, 14L, true, false).getId());
+        roomIds.add(rooomBO.add("E1", RoomType.LECTURE_HALL, 0, 140L, 0L, true, true).getId());
+        roomIds.add(rooomBO.add("E2", RoomType.LECTURE_HALL, 0, 40L, 0L, false, true).getId());
+        roomIds.add(rooomBO.add("05", RoomType.LABORATORY, 0, 20L, 20L, false, false).getId());
+        roomIds.add(rooomBO.add("314", RoomType.LABORATORY, 3, 14L, 14L, true, false).getId());
 
         return roomIds;
     }

@@ -1,4 +1,4 @@
-package pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation;
+package pl.godziatkowski.roombookingapp.domain.room.entity.steps.room;
 
 import java.util.Map;
 
@@ -28,7 +28,6 @@ public class WhenRoomTest
 
         room.edit((String) roomData.get("name"),
             (RoomType) roomData.get("roomType"),
-            (Long) roomData.get("buildingId"),
             (Integer) roomData.get("floor"),
             (Long) roomData.get("seatsCount"),
             (Long) roomData.get("computerStationsCount"),

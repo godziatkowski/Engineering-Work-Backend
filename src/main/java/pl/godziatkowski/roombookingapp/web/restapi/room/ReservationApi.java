@@ -125,29 +125,6 @@ public class ReservationApi {
             .body(reservations);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/building/{buildingId}")
-    public HttpEntity<Map<Long, List<Reservation>>> reservationsForRooms(@PathVariable("buildingId") Long buildingId) {
-        List<ReservationSnapshot> reservationSnapshots = reservationSnapshotFinder.findAllActiveByBuildingId(buildingId);
-        Set<Long> userIds = reservationSnapshots.stream().map(ReservationSnapshot::getUserId).collect(Collectors.toSet());
-        Map<Long, UserSnapshot> userSnapshots = userSnapshotFinder.findAsMapByUserIdIn(userIds);
-        List<Reservation> reservations = reservationSnapshots.stream().map(reservationSnapshot -> {
-            return new Reservation(reservationSnapshot, userSnapshots.get(reservationSnapshot.getUserId()));
-        }).collect(Collectors.toList());
-        Map<Long, List<Reservation>> reservationsGroupedByRoomId = reservations.stream()
-            .collect(
-                Collectors.groupingBy(
-                    reservation -> {
-                        return reservation.getRoomId();
-                    },
-                    Collectors.toList()
-                )
-            );
-        return ResponseEntity
-            .ok()
-            .body(reservationsGroupedByRoomId);
-
-    }
-
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
     public HttpEntity<Reservation> reserve(@Valid @RequestBody ReservationNew reservationNew) {
         UserSnapshot userSnapshot = getLoggedUserSnapshot();

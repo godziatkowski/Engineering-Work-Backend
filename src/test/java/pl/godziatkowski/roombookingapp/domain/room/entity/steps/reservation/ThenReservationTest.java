@@ -1,4 +1,4 @@
-package pl.godziatkowski.roombookingapp.domain.room.entity.steps.room;
+package pl.godziatkowski.roombookingapp.domain.room.entity.steps.reservation;
 
 import java.time.LocalDateTime;
 import java.util.Map;

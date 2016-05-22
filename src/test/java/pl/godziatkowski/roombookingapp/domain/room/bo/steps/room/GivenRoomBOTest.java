@@ -22,11 +22,10 @@ public class GivenRoomBOTest
     @ProvidedScenarioState
     private RoomSnapshot roomSnapshot;
 
-    public GivenRoomBOTest roomData(String name, RoomType roomType, long buildingId, int floor,
+    public GivenRoomBOTest roomData(String name, RoomType roomType, int floor,
         long seatsCount, long computerStationsCount, boolean hasProjector, boolean hasBlackboard) {
         roomData.put("name", name);
         roomData.put("roomType", roomType);
-        roomData.put("buildingId", buildingId);
         roomData.put("floor", floor);
         roomData.put("seatsCount", seatsCount);
         roomData.put("computerStationsCount", computerStationsCount);
@@ -35,18 +34,17 @@ public class GivenRoomBOTest
         return this;
     }
 
-    public GivenRoomBOTest an_existing_room(String name, RoomType roomType, long buildingId, int floor,
+    public GivenRoomBOTest an_existing_room(String name, RoomType roomType, int floor,
         long seatsCount, long computerStationsCount, boolean hasProjector, boolean hasBlackboard) {
         roomData.put("name", name);
         roomData.put("roomType", roomType);
-        roomData.put("buildingId", buildingId);
         roomData.put("floor", floor);
         roomData.put("seatsCount", seatsCount);
         roomData.put("computerStationsCount", computerStationsCount);
         roomData.put("hasProjector", hasProjector);
         roomData.put("hasBlackboard", hasBlackboard);
 
-        Room room = new Room(name, roomType, buildingId, floor, seatsCount, computerStationsCount, hasProjector,
+        Room room = new Room(name, roomType, floor, seatsCount, computerStationsCount, hasProjector,
             hasBlackboard);
         roomSnapshot = roomRepository.save(room).toSnapshot();
         return this;
