@@ -1,9 +1,10 @@
-package pl.godziatkowski.roombookingapp.web.restapi.room;
+package pl.godziatkowski.roombookingapp.web.restapi.reservation;
 
 import java.time.LocalDateTime;
 
 import pl.godziatkowski.roombookingapp.domain.room.dto.ReservationSnapshot;
 import pl.godziatkowski.roombookingapp.domain.user.dto.UserSnapshot;
+import pl.godziatkowski.roombookingapp.web.restapi.room.RoomType;
 
 public class Reservation {
 

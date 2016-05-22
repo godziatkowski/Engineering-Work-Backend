@@ -1,8 +1,11 @@
-package pl.godziatkowski.roombookingapp.web.restapi.room;
+package pl.godziatkowski.roombookingapp.web.restapi.reservation;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
+import pl.godziatkowski.roombookingapp.domain.room.dto.ReservationSnapshot;
 import pl.godziatkowski.roombookingapp.domain.room.dto.RoomSnapshot;
 import pl.godziatkowski.roombookingapp.domain.room.finder.IReservationSnapshotFinder;
 import pl.godziatkowski.roombookingapp.domain.room.finder.IRoomSnapshotFinder;
@@ -10,14 +13,14 @@ import pl.godziatkowski.roombookingapp.sharedkernel.annotations.RestValidator;
 import pl.godziatkowski.roombookingapp.web.restapi.commonvalidation.AbstractValidator;
 
 @RestValidator
-public class ReservationNewValidator
+public class ReservationEditValidator
     extends AbstractValidator {
 
     private final IReservationSnapshotFinder reservationSnapshotFinder;
     private final IRoomSnapshotFinder roomSnapshotFinder;
 
     @Autowired
-    public ReservationNewValidator(IReservationSnapshotFinder reservationSnapshotFinder,
+    public ReservationEditValidator(IReservationSnapshotFinder reservationSnapshotFinder,
         IRoomSnapshotFinder roomSnapshotFinder) {
         this.reservationSnapshotFinder = reservationSnapshotFinder;
         this.roomSnapshotFinder = roomSnapshotFinder;
@@ -25,25 +28,33 @@ public class ReservationNewValidator
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return ReservationNew.class.isAssignableFrom(clazz);
+        return ReservationEdit.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void customValidation(Object target, Errors errors) {
-        ReservationNew reservationNew = (ReservationNew) target;
-        RoomSnapshot roomSnapshot = roomSnapshotFinder.findOneById(reservationNew.getRoomId());
+        ReservationEdit reservationEdit = (ReservationEdit) target;
+        if (reservationSnapshotFinder.findOneById(reservationEdit.getId()) == null){
+            errors.rejectValue("id", "RequestedReservationDoesNotExist");
+        }
+
+        RoomSnapshot roomSnapshot = roomSnapshotFinder.findOneById(reservationEdit.getRoomId());
         if (roomSnapshot == null) {
             errors.rejectValue("roomId", "RoomDoesNotExist");
         } else if (!roomSnapshot.isUsable()) {
             errors.rejectValue("roomId", "RoomIsNotUsable");
         }
-        if (reservationNew.getEndDate().isBefore(reservationNew.getStartDate())) {
+        if (reservationEdit.getEndDate().isBefore(reservationEdit.getStartDate())) {
             errors.rejectValue("endDate", "ReservationEndDateCannotBeBeforeReservationStartDate");
         }
-        if (!reservationSnapshotFinder.findAllActiveByRoomIdAndTimePeriod(reservationNew.getRoomId(),
-            reservationNew.getStartDate(),
-            reservationNew.getEndDate()).isEmpty()) {
-            errors.rejectValue("roomId", "RommAlreadyReservedAtGivenTime");
+        List<ReservationSnapshot> reservationSnapshots = reservationSnapshotFinder.findAllActiveByRoomIdAndTimePeriod(
+            reservationEdit.getRoomId(),
+            reservationEdit.getStartDate(),
+            reservationEdit.getEndDate());
+        if (!reservationSnapshots.isEmpty()) {
+            if (reservationSnapshots.size() > 1 || !reservationSnapshots.get(0).getId().equals(reservationEdit.getId())) {
+                errors.rejectValue("roomId", "RommAlreadyReservedAtGivenTime");
+            }
         }
     }
 }

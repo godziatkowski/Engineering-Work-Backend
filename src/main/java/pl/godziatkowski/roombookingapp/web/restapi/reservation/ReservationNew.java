@@ -1,27 +1,12 @@
-package pl.godziatkowski.roombookingapp.web.restapi.room;
+package pl.godziatkowski.roombookingapp.web.restapi.reservation;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotNull;
+public class ReservationNew {
 
-public class ReservationEdit {
-
-    @NotNull
-    private Long id;
-    @NotNull
     private LocalDateTime startDate;
-    @NotNull
     private LocalDateTime endDate;
-    @NotNull
     private Long roomId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public LocalDateTime getStartDate() {
         return startDate;

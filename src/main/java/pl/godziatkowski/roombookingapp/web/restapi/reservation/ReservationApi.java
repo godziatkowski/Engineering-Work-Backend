@@ -1,4 +1,4 @@
-package pl.godziatkowski.roombookingapp.web.restapi.room;
+package pl.godziatkowski.roombookingapp.web.restapi.reservation;
 
 import java.util.List;
 import java.util.Map;
