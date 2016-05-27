@@ -63,27 +63,6 @@ public class RoomApi {
             .ok()
             .body(rooms);
     }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/usable")
-    public HttpEntity<List<Room>> listUsable() {
-        List<RoomSnapshot> roomSnapshots = roomSnapshotFinder.findUsable();
-        List<Room> rooms = roomSnapshots.stream().map(Room::new).collect(Collectors.toList());
-
-        return ResponseEntity
-            .ok()
-            .body(rooms);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/{floor}/rooms")
-    public HttpEntity<List<Room>> roomsOnFloor(@PathVariable("floor") Integer floor) {
-        List<RoomSnapshot> roomSnapshots = roomSnapshotFinder.findAllByFloor(floor);
-        List<Room> rooms = roomSnapshots.stream().map(Room::new).collect(Collectors.toList());
-        return ResponseEntity
-            .ok()
-            .body(rooms);
-
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public HttpEntity<Room> get(@PathVariable("id") Long id) {
         RoomSnapshot roomSnapshot = roomSnapshotFinder.findOneById(id);
@@ -95,6 +74,35 @@ public class RoomApi {
             .ok()
             .body(new Room(roomSnapshot));
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/usable")
+    public HttpEntity<List<Room>> listUsable() {
+        List<RoomSnapshot> roomSnapshots = roomSnapshotFinder.findUsable();
+        List<Room> rooms = roomSnapshots.stream().map(Room::new).collect(Collectors.toList());
+
+        return ResponseEntity
+            .ok()
+            .body(rooms);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/floors")
+    public HttpEntity<List<Integer>> floors() {
+        List<Integer> floors = roomSnapshotFinder.findFloors();
+
+        return ResponseEntity
+            .ok()
+            .body(floors);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{floor}/rooms")
+    public HttpEntity<List<Room>> roomsOnFloor(@PathVariable("floor") Integer floor) {
+        List<RoomSnapshot> roomSnapshots = roomSnapshotFinder.findAllByFloor(floor);
+        List<Room> rooms = roomSnapshots.stream().map(Room::new).collect(Collectors.toList());
+        return ResponseEntity
+            .ok()
+            .body(rooms);
+
+    }    
 
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
     public HttpEntity<Room> add(@Valid @RequestBody RoomNew roomNew) {
