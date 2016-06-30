@@ -14,5 +14,8 @@ public interface IRoomBO {
     void markAsUsable(Long id);
 
     void markAsNotUsable(Long id);
+    
+    void assaignKeeper(Long id, long keeperId);
+    void clearKeeper(Long id);
 
 }

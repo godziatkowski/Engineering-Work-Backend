@@ -2,8 +2,9 @@ package pl.godziatkowski.roombookingapp.web.restapi.shared;
 
 public enum UserRole {
 
-    USER,
-    ADMIN;
+    ADMIN,
+    KEEPER,
+    USER;
 
     public static pl.godziatkowski.roombookingapp.domain.user.entity.UserRole convertToDomainValue(UserRole restapiValue) {
         pl.godziatkowski.roombookingapp.domain.user.entity.UserRole userRole = null;
@@ -13,6 +14,9 @@ public enum UserRole {
                 break;
             case ADMIN:
                 userRole = pl.godziatkowski.roombookingapp.domain.user.entity.UserRole.ADMIN;
+                break;
+            case KEEPER:
+                userRole = pl.godziatkowski.roombookingapp.domain.user.entity.UserRole.KEEPER;
                 break;
             default:
                 throw new AssertionError();

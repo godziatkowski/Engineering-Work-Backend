@@ -13,9 +13,10 @@ public class RoomSnapshot {
     private final Boolean hasProjector;
     private final Boolean hasBlackboard;
     private final Boolean isUsable;
+    private final Long keeperId;
 
     public RoomSnapshot(Long id, String name, RoomType roomType, Integer floor, Long seatsCount,
-        Long computerStationsCount, Boolean hasProjector, Boolean hasBlackboard, Boolean isUsable) {
+        Long computerStationsCount, Boolean hasProjector, Boolean hasBlackboard, Boolean isUsable, Long keeperId) {
         this.id = id;
         this.name = name;
         this.roomType = roomType;
@@ -25,6 +26,7 @@ public class RoomSnapshot {
         this.hasProjector = hasProjector;
         this.hasBlackboard = hasBlackboard;
         this.isUsable = isUsable;
+        this.keeperId = keeperId;
     }
 
     public Long getId() {
@@ -61,6 +63,10 @@ public class RoomSnapshot {
 
     public Boolean isUsable() {
         return isUsable;
+    }
+    
+    public Long getKeeperId() {
+        return keeperId;
     }
 
 }

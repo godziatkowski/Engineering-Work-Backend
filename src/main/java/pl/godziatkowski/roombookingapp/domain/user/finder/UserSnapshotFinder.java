@@ -1,5 +1,6 @@
 package pl.godziatkowski.roombookingapp.domain.user.finder;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,6 +47,9 @@ public class UserSnapshotFinder
 
     @Override
     public Map<Long, UserSnapshot> findAsMapByUserIdIn(Set<Long> ids) {
+        if(ids.isEmpty()){
+            return new HashMap<>();
+        }
         return userRepository.findAll(ids)
             .stream()
             .map(User::toSnapshot)
@@ -55,8 +59,6 @@ public class UserSnapshotFinder
     @Override
     public Integer findCountOfUsersWithRoleAdmin() {
         return userRepository.countByUserRoleAdmin(UserRole.ADMIN);
-//        long count = userRepository.countByUserRoles(UserRole.ADMIN);//.get(0)[0];
-//        return (int)count;
     }
 
 }

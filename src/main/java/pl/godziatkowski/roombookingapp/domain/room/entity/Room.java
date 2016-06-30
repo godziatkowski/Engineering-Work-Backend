@@ -55,6 +55,8 @@ public class Room
 
     @NotNull
     private Boolean isUsable;
+    
+    private Long keeperId;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "room", orphanRemoval = true)
     @OrderBy("startDate")
@@ -92,6 +94,14 @@ public class Room
         this.hasProjector = hasProjector;
         this.hasBlackboard = hasBlackboard;
     }
+    
+    public void assaignKeeper(long keeperId){
+        this.keeperId = keeperId;
+    }
+    
+    public void clearKeeper( ){
+        this.keeperId = null;
+    }
 
     public void markAsUsable() {
         this.isUsable = true;
@@ -106,7 +116,7 @@ public class Room
             throw new EntityInStateNewException();
         }
         return new RoomSnapshot(id, name, roomType, floor, seatsCount, computerStationsCount, hasProjector,
-            hasBlackboard, isUsable);
+            hasBlackboard, isUsable, keeperId);
     }
 
 }

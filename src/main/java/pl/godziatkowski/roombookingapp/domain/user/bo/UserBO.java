@@ -87,4 +87,22 @@ public class UserBO
         }
     }
 
+    @Override
+    public void addWatchedRoom(long id, long roomId) {
+        User user = userRepository.getOne(id);
+        if (user != null) {
+            user.startWatchingRoom(roomId);
+            LOGGER.info("User <{}> has been assigned as keeper for room <{}>", id, roomId);
+        }
+    }
+
+    @Override
+    public void removeWatchedRoom(long id, long roomId) {
+        User user = userRepository.getOne(id);
+        if (user != null) {
+            user.stopWatchingRoom(roomId);
+            LOGGER.info("User <{}> has been assigned as removed from keeper role for room <{}>", id, roomId);
+        }
+    }
+
 }

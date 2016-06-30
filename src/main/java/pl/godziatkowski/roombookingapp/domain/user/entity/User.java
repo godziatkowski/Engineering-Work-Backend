@@ -52,11 +52,11 @@ public class User
     private String lastName;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Long> watchedRooms = new HashSet<>();
+    private final Set<Long> watchedRooms = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    private Set<UserRole> userRoles = new HashSet<>();
+    private final Set<UserRole> userRoles = new HashSet<>();
 
     protected User() {
     }
@@ -64,7 +64,7 @@ public class User
     public User(String login, String password, String firstName, String lastName) {
         this.login = login;
         this.firstName = firstName;
-        this.lastName = lastName;        
+        this.lastName = lastName;
         this.password = password;
         this.userRoles.add(UserRole.USER);
     }
@@ -78,17 +78,23 @@ public class User
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    
-    public void changePassword( String password){
+
+    public void changePassword(String password) {
         this.password = password;
     }
 
     public void startWatchingRoom(Long roomId) {
         watchedRooms.add(id);
+        if (!userRoles.contains(UserRole.KEEPER)) {
+            userRoles.add(UserRole.KEEPER);
+        }
     }
 
     public void stopWatchingRoom(Long roomId) {
         watchedRooms.remove(id);
+        if (watchedRooms.isEmpty()) {
+            userRoles.remove(UserRole.KEEPER);
+        }
     }
 
     public UserSnapshot toSnapshot() {
