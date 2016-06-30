@@ -1,0 +1,15 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div>
+            Witaj <span th:text="${user}"></span><br />
+            twoja prośba o rezerwację w dniu <span th:text="${date}"></span> w godzinach <span th:text="${start}"></span> <span th:text="${end}"></span> na salę <span th:text="${room}"></span> zostałą odrzucona przez Administratora.
+        </div>
+    </body>
+</html>
