@@ -29,5 +29,9 @@ public interface IReservationRepository
     public List<Reservation> findAllByRoomIdAndIsCanceledFalse(Long roomId);
     @Query("SELECT r FROM Reservation r INNER JOIN r.room rm WHERE r.isCanceled IS FALSE AND rm.floor = :floor")
     public List<Reservation> findAllByIsCanceledFalseAndRoomOnFloor(@Param("floor") Integer floor);
+    @Query("SELECT r FROM Reservation r WHERE r.reservationStatus LIKE 'PENDING'")
+    public List<Reservation> findAllPending();
+    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.reservationStatus LIKE 'PENDING'")
+    public Integer countAllPending();
 
 }

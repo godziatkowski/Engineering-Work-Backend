@@ -3,6 +3,7 @@ package pl.godziatkowski.roombookingapp.web.restapi.reservation;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ import pl.godziatkowski.roombookingapp.domain.room.bo.IReservationBO;
 import pl.godziatkowski.roombookingapp.domain.room.dto.ReservationSnapshot;
 import pl.godziatkowski.roombookingapp.domain.room.finder.IReservationSnapshotFinder;
 import pl.godziatkowski.roombookingapp.domain.user.dto.UserSnapshot;
+import pl.godziatkowski.roombookingapp.domain.user.entity.UserRole;
 import pl.godziatkowski.roombookingapp.domain.user.finder.IUserSnapshotFinder;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -89,6 +91,41 @@ public class ReservationApi {
         return ResponseEntity
             .ok()
             .body(reservations);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/pending")
+    public HttpEntity<List<Reservation>> pending() {
+        List<ReservationSnapshot> reservationSnapshots = reservationSnapshotFinder.findAllPending();
+
+        Set<Long> userIds = reservationSnapshots.stream()
+            .map(ReservationSnapshot::getUserId)
+            .collect(Collectors.toSet());
+
+        Map<Long, UserSnapshot> userSnapshots = userSnapshotFinder.findAsMapByUserIdIn(userIds);
+
+        List<Reservation> reservations = reservationSnapshots.stream().map(reservationSnapshot -> {
+            return new Reservation(reservationSnapshot, userSnapshots.get(reservationSnapshot.getUserId()));
+        }).collect(Collectors.toList());
+
+        UserSnapshot userSnapshot = getLoggedUserSnapshot();        
+        if (userSnapshot.getUserRoles().contains(UserRole.KEEPER)
+            && !userSnapshot.getUserRoles().contains(UserRole.ADMIN)) {
+            reservations = reservations.stream()
+                .filter(isRoomKeeper(userSnapshot))
+                .collect(Collectors.toList());
+        }
+
+        return ResponseEntity
+            .ok()
+            .body(reservations);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/pending/count")
+    public HttpEntity<Integer> pendingCount() {
+        Integer countOfPendingReservations = reservationSnapshotFinder.getCountOfPendingReservations();
+        return ResponseEntity
+            .ok()
+            .body(countOfPendingReservations);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/room")
@@ -156,9 +193,29 @@ public class ReservationApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}/accept")
+    public HttpEntity<Reservation> accept(@PathVariable("id") Long id) {
+        UserSnapshot loggedUserSnapshot = getLoggedUserSnapshot();
+        reservationBO.accept(id, loggedUserSnapshot.getId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}/reject")
+    public HttpEntity<Reservation> reject(@PathVariable("id") Long id) {
+        UserSnapshot loggedUserSnapshot = getLoggedUserSnapshot();
+        reservationBO.reject(id, loggedUserSnapshot.getId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private boolean onlyOneDateIsGiven(ReservationSearchParams reservationSearchParams) {
         return reservationSearchParams.getFromDate() == null && reservationSearchParams.getToDate() != null
             || reservationSearchParams.getFromDate() != null && reservationSearchParams.getToDate() == null;
+    }
+
+    private static Predicate<Reservation> isRoomKeeper(UserSnapshot userSnapshot) {
+        return p -> userSnapshot.getWatchedRoomsIds().contains(p.getRoom().getId());
     }
 
 }

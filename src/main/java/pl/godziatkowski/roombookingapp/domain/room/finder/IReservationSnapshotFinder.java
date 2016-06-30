@@ -16,5 +16,9 @@ public interface IReservationSnapshotFinder {
     public List<ReservationSnapshot> findAllByUserId(Long id);
 
     public List<ReservationSnapshot> findAllByRoomIdAndActive(Long roomId);
+    
+    List<ReservationSnapshot> findAllPending();
+
+    Integer getCountOfPendingReservations();
 
 }

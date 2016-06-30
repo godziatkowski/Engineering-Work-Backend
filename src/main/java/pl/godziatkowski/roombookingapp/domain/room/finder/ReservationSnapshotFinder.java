@@ -67,8 +67,19 @@ public class ReservationSnapshotFinder
         return convert(reservations);
     }
 
+    @Override
+    public List<ReservationSnapshot> findAllPending() {
+        List<Reservation> reservations = reservationRepository.findAllPending();
+        return convert(reservations);
+    }
+
     private List<ReservationSnapshot> convert(List<Reservation> reservation) {
         return reservation.stream().map(Reservation::toSnapshot).collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer getCountOfPendingReservations() {
+        return reservationRepository.countAllPending();
     }
 
 }

@@ -7,11 +7,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 
 import pl.godziatkowski.roombookingapp.config.persistance.converter.LocalDateTimePersistenceConverter;
 import pl.godziatkowski.roombookingapp.domain.room.dto.ReservationSnapshot;
 import pl.godziatkowski.roombookingapp.domain.room.entity.Reservation;
 import pl.godziatkowski.roombookingapp.domain.room.entity.Room;
+import pl.godziatkowski.roombookingapp.domain.room.event.ReservationAcceptedEvent;
+import pl.godziatkowski.roombookingapp.domain.room.event.ReservationRejectedEvent;
 import pl.godziatkowski.roombookingapp.domain.room.exception.RoomAlreadyReservedAtGivenDateAndTimeException;
 import pl.godziatkowski.roombookingapp.domain.room.exception.RoomIsNotUsableException;
 import pl.godziatkowski.roombookingapp.domain.room.exception.TimeOfReservationStartAfterEndTimeException;
@@ -26,13 +29,15 @@ public class ReservationBO
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationBO.class);
 
     private final IReservationRepository reservationRepository;
-
     private final IRoomRepository roomRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public ReservationBO(IReservationRepository reservationRepository, IRoomRepository roomRepository) {
+    public ReservationBO(IReservationRepository reservationRepository, IRoomRepository roomRepository,
+        ApplicationEventPublisher eventPublisher) {
         this.reservationRepository = reservationRepository;
         this.roomRepository = roomRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -93,9 +98,32 @@ public class ReservationBO
         if (reservation != null) {
             if (!reservation.toSnapshot().isCanceled()) {
                 reservation.cancelReservation();
+                LOGGER.info("Reservation with id <{}> has been canceled", id);
             }
-            LOGGER.info("Reservation with id <{}> has been canceled");
         }
     }
 
+    @Override
+    public void accept(Long id, long acceptedBy) {
+        Reservation reservation = reservationRepository.findOne(id);
+        if (reservation != null) {
+            ReservationSnapshot reservationSnapshot = reservation.toSnapshot();
+            reservation.acceptReservation(acceptedBy);
+            LOGGER.info("Reservation with id <{}> has been accepted by <{}>", id, acceptedBy);
+            ReservationAcceptedEvent event = new ReservationAcceptedEvent(this, reservationSnapshot);
+            eventPublisher.publishEvent(event);
+        }
+    }
+
+    @Override
+    public void reject(Long id, long rejectedBy) {
+        Reservation reservation = reservationRepository.getOne(id);
+        if (reservation != null) {
+            ReservationSnapshot reservationSnapshot = reservation.toSnapshot();
+            reservationRepository.delete(id);
+            LOGGER.info("Reservation with id <{}> has been rejcted by <{}>", id, rejectedBy);
+            ReservationRejectedEvent event = new ReservationRejectedEvent(this, reservationSnapshot);
+            eventPublisher.publishEvent(event);
+        }
+    }
 }

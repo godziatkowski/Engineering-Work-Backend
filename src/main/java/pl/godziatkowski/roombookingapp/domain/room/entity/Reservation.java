@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,8 @@ import pl.godziatkowski.roombookingapp.config.persistance.converter.LocalDateTim
 import pl.godziatkowski.roombookingapp.domain.room.dto.ReservationSnapshot;
 import pl.godziatkowski.roombookingapp.sharedkernel.exception.EntityInStateNewException;
 
+import static java.time.LocalDateTime.now;
+
 @Entity
 public class Reservation
     implements Serializable {
@@ -26,6 +30,9 @@ public class Reservation
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
+    private Timestamp createdAt;
+    
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     private Room room;
@@ -39,8 +46,15 @@ public class Reservation
     @NotNull
     private Timestamp endDate;
     
+    
     @NotNull
     private Boolean isCanceled;
+    
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reservationStatus;
+    
+    private Long acceptedBy;
 
     protected Reservation() {
     }
@@ -50,13 +64,20 @@ public class Reservation
         this.userId = userId;
         this.startDate = LocalDateTimePersistenceConverter.convertToDatabaseColumnValue(startDate);
         this.endDate = LocalDateTimePersistenceConverter.convertToDatabaseColumnValue(endDate);
+        this.createdAt = LocalDateTimePersistenceConverter.convertToDatabaseColumnValue(now());
         isCanceled = false;
+        this.reservationStatus = ReservationStatus.PENDING;
     }
 
     public void edit(Room room, LocalDateTime startDate, LocalDateTime endDate) {
         this.room = room;
         this.startDate = LocalDateTimePersistenceConverter.convertToDatabaseColumnValue(startDate);
         this.endDate = LocalDateTimePersistenceConverter.convertToDatabaseColumnValue(endDate);
+    }
+    
+    public void acceptReservation(long acceptedBy){
+        this.reservationStatus = ReservationStatus.ACCEPTED;
+        this.acceptedBy = acceptedBy;
     }
     
     public void cancelReservation(){
@@ -67,10 +88,11 @@ public class Reservation
         if (id == null) {
             throw new EntityInStateNewException();
         }
+        LocalDateTime createdAt = LocalDateTimePersistenceConverter.convertToEntityAttributeValue(this.createdAt);
         LocalDateTime startDate = LocalDateTimePersistenceConverter.convertToEntityAttributeValue(this.startDate);
         LocalDateTime endDate = LocalDateTimePersistenceConverter.convertToEntityAttributeValue(this.endDate);
 
-        return new ReservationSnapshot(id, room.toSnapshot(), userId, startDate, endDate, isCanceled);
+        return new ReservationSnapshot(id, createdAt, room.toSnapshot(), userId, startDate, endDate, isCanceled, reservationStatus, acceptedBy);
     }
 
 }
