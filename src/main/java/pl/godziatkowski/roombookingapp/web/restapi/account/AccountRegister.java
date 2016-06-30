@@ -6,16 +6,14 @@ import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import static pl.godziatkowski.roombookingapp.sharedkernel.constant.Constants.EMAIL_REGEXP;
+
 public class AccountRegister {
 
     @NotNull
-    @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[a-z0-9]*$")
+    @Size(min = 12, max = 255)
+    @Pattern(regexp = EMAIL_REGEXP)
     private String login;
-
-    @NotNull
-    @Size(min = 4, max = 60)
-    private String password;
 
     @NotNull
     @Size(min = 1, max = 25)
@@ -24,7 +22,7 @@ public class AccountRegister {
     @NotNull
     @Size(min = 1, max = 50)
     private String lastName;
-
+    
     @ApiModelProperty(value = "Username for new account")
     public String getLogin() {
         return login;
@@ -32,15 +30,6 @@ public class AccountRegister {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    @ApiModelProperty(value = "Password for new account")
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @ApiModelProperty(value = "First name of account owner")

@@ -1,0 +1,22 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div>
+            Witaj <span th:text="${user}"></span><br />
+            Na to konto został przyznany dostęp do aplikacji RoomBookingApp w budynku CTI.<br/>
+            Przy pomocy poniższego hasła możesz się zalogować do systemu:<br/>
+            <span th:text="${password}"></span>
+            <div>
+                <h4 style="color: darkorange">
+                    Dla bezpieczeństwa konta po zalogowaniu się do systemu powinieneś zmienić powyższe hasło.
+                </h4>
+            </div>
+        </div>
+    </body>
+</html>

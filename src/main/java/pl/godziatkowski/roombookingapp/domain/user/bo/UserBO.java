@@ -1,11 +1,15 @@
 package pl.godziatkowski.roombookingapp.domain.user.bo;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 
 import pl.godziatkowski.roombookingapp.domain.user.dto.UserSnapshot;
 import pl.godziatkowski.roombookingapp.domain.user.entity.User;
+import pl.godziatkowski.roombookingapp.domain.user.event.NewUserRegisteredEvent;
 import pl.godziatkowski.roombookingapp.domain.user.exception.UserAlreadyExistException;
 import pl.godziatkowski.roombookingapp.domain.user.repository.IUserRepository;
 import pl.godziatkowski.roombookingapp.service.IPasswordEncodingService;
@@ -19,15 +23,19 @@ public class UserBO
 
     private final IUserRepository userRepository;
     private final IPasswordEncodingService passwordEncodingService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public UserBO(IUserRepository userRepository, IPasswordEncodingService passwordEncodingService) {
+    public UserBO(IUserRepository userRepository, IPasswordEncodingService passwordEncodingService,
+        ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.passwordEncodingService = passwordEncodingService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
-    public UserSnapshot register(String login, String password, String firstName, String lastName) {
+    public UserSnapshot register(String login, String firstName, String lastName) {
+        String password = UUID.randomUUID().toString().substring(0, 8);
         if (userRepository.findOneByLoginIgnoreCase(login) != null) {
             throw new UserAlreadyExistException();
         }
@@ -39,6 +47,9 @@ public class UserBO
         LOGGER.info("Created user account with id: <{}> and login: <{}> for user <{}> <{}>",
             userSnapshot.getId(), userSnapshot.getLogin(), userSnapshot.getFirstName(), userSnapshot.getLastName());
 
+        NewUserRegisteredEvent event = new NewUserRegisteredEvent(this, userSnapshot, password);
+
+        eventPublisher.publishEvent(event);
         return userSnapshot;
     }
 

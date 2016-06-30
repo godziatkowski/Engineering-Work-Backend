@@ -32,7 +32,6 @@ public class WhenUserBOTest
         try {
             userSnapshot = userBO.register(
                 userData.get("login"),
-                userData.get("password"),
                 userData.get("firstName"),
                 userData.get("lastName")
             );

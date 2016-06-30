@@ -35,7 +35,6 @@ public class ThenUserBOTest
         assertThat(exceptionWasThrown, is(false));
         assertThat(userSnapshot, is(notNullValue()));
         assertThat(userSnapshot.getLogin(), is(equalTo(userData.get("login"))));
-        assertThat(passwordEncodingService.isMatch(userData.get("password"), userSnapshot.getPassword()), is(true));
         assertThat(userSnapshot.getFirstName(), is(equalTo(userData.get("firstName"))));
         assertThat(userSnapshot.getLastName(), is(equalTo(userData.get("lastName"))));
         return this;

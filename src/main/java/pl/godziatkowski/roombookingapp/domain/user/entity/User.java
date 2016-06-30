@@ -14,11 +14,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 import pl.godziatkowski.roombookingapp.domain.user.dto.UserSnapshot;
 import pl.godziatkowski.roombookingapp.sharedkernel.exception.EntityInStateNewException;
+
+import static pl.godziatkowski.roombookingapp.sharedkernel.constant.Constants.EMAIL_REGEXP;
 
 @Entity
 public class User
@@ -31,9 +34,9 @@ public class User
     private Long id;
 
     @NotNull
-    @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$")
-    @Column(length = 20, unique = true, nullable = false)
+    @Size(min = 12, max = 255)
+    @Column(unique = true, nullable = false)
+    @Email(regexp = EMAIL_REGEXP)
     private String login;
 
     @NotNull

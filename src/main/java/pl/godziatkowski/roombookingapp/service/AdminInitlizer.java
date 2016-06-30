@@ -33,7 +33,8 @@ public class AdminInitlizer
 
     @Override
     public void initialize() {
-        UserSnapshot userSnapshot = userBO.register(login, password, name, name);
+        UserSnapshot userSnapshot = userBO.register(login, name, name);
+        userBO.changePassword(userSnapshot.getId(), password);
         userBO.grantAdminRights(userSnapshot.getId());
     }
 

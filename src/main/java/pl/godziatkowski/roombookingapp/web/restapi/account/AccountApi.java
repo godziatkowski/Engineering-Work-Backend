@@ -66,7 +66,7 @@ public class AccountApi {
         @ApiResponse(code = 200, message = "Account created")})
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
     public HttpEntity<Account> register(@Valid @RequestBody AccountRegister accountNew) {
-        UserSnapshot userSnapshot = userBO.register(accountNew.getLogin(), accountNew.getPassword(),
+        UserSnapshot userSnapshot = userBO.register(accountNew.getLogin(), 
             accountNew.getFirstName(), accountNew.getLastName());
 
         return new ResponseEntity<>(new Account(userSnapshot), HttpStatus.OK);

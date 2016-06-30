@@ -27,13 +27,17 @@ public class UserInitializer
     public List<UserSnapshot> initializeUsers() {
         List<UserSnapshot> users = new ArrayList<>();
 
-        users.add(userBO.register("admin", "admin", "admin", "admin"));
+        users.add(userBO.register("admin@cti.p.lodz.pl", "admin", "admin"));
 
         userBO.grantAdminRights(users.get(0).getId());
 
-        users.add(userBO.register("RafalGorski", "qwert", "Rafał", "Gorski"));
-        users.add(userBO.register("BarbaraKaczmarek", "trewq", "Barbara", "Kaczmarek"));
-        users.add(userBO.register("TadeuszAdamski", "zaqwsx", "Tadeusz", "Adamski"));
+        users.add(userBO.register("180255@edu.p.lodz.pl", "Rafał", "Gorski"));
+        users.add(userBO.register("BarbaraKaczmarek@kis.p.lodz.pl", "Barbara", "Kaczmarek"));
+        users.add(userBO.register("TadeuszAdamski@cti.p.lodz.pl", "Tadeusz", "Adamski"));
+
+        users.stream().forEach((user) -> {
+            userBO.changePassword(user.getId(), "password");
+        });
 
         return users;
     }
